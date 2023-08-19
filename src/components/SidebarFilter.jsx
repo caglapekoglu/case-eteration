@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { allModels, baseBrands } from "../data/staticDatas";
 import { arrayControl } from "../helper/arrayControl";
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
   const [brands, setBrands] = useState(baseBrands);
   const [models, setModels] = useState([])
+  const [autoanimate] = useAutoAnimate();
   const setNewItems = () => {
     setItems((prev) => {
       let next = [...prev];
@@ -32,10 +34,8 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
   };
   const brandFilter = (txt) => {
     if (txt != null && txt != '') {
-      setBrands((prev) => {
-        let next = [...prev]
-        next = next.filter((obj) => obj.txt.toLowerCase().includes(txt.toLowerCase()))
-        return next;
+      setBrands(() => {
+        return baseBrands.filter((obj) => obj.txt.toLowerCase().includes(txt.toLowerCase()));
       })
       return
     }
@@ -71,10 +71,9 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
   }
   const modelFilter = (txt) => {
     if (txt != null && txt != '') {
-      setModels((prev) => {
-        let next = [...prev]
-        next = next.filter((obj) => obj.txt.toLowerCase().includes(txt.toLowerCase()))
-        return next;
+      setModels(() => {
+        const selectedBrands = brands.filter(obj => obj.checked).map(obj => obj.id)
+        return allModels.filter((obj) => selectedBrands.includes(obj.parentId) && obj.txt.toLowerCase().includes(txt.toLowerCase()));
       })
       return
     }
@@ -85,72 +84,69 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
   }
   return (
     <div className="flex lg:flex-col gap-5 overflow-scroll lg:overflow-visible mb-10 justify-center lg:justify-start">
-      <div>
-        <span className="text-secondary text-[12px]">Sort by</span>
-        <div className="bg-white w-[220px] flex h-[158px] overflow-y-scroll flex-col gap-[15px] p-4 text-sm shadow-xl">
-          <label className="flex gap-2">
-            <input
-              type="radio"
-              value="oldToNew"
-              checked={sort === "oldToNew"}
-              onChange={handleSortChange} />
-            <p>Old to new</p>
-          </label>
-          <label className="flex gap-2">
-            <input
-              type="radio"
-              value="newToOld"
-              checked={sort === "newToOld"}
-              onChange={handleSortChange} />
-            <p>New to old</p>
-          </label>
-          <label className="flex gap-2">
-            <input
-              type="radio"
-              value="highToLow"
-              checked={sort === "highToLow"}
-              onChange={handleSortChange} />
-            <p>Price high to low</p>
-          </label>
-          <label className="flex gap-2">
+    <div>
+      <span className="text-secondary text-[12px]">Sort by</span>
+      <div className="bg-white w-[220px] flex h-[158px] overflow-y-scroll flex-col gap-[15px] p-4 text-sm shadow-xl">
+        <label className="flex gap-2">
+          <input
+            type="radio"
+            value="oldToNew"
+            checked={sort === "oldToNew"}
+            onChange={handleSortChange} />
+          <p>Old to new</p>
+        </label>
+        <label className="flex gap-2">
+          <input
+            type="radio"
+            value="newToOld"
+            checked={sort === "newToOld"}
+            onChange={handleSortChange} />
+          <p>New to old</p>
+        </label>
+        <label className="flex gap-2">
+          <input
+            type="radio"
+            value="highToLow"
+            checked={sort === "highToLow"}
+            onChange={handleSortChange} />
+          <p>Price high to low</p>
+        </label>
+        <label className="flex gap-2">
 
-            <input
-              type="radio"
-              value="lowToHigh"
-              checked={sort === "lowToHigh"}
-              onChange={handleSortChange} />
-            <p>Price low to high</p>
-          </label>
-        </div>
+          <input
+            type="radio"
+            value="lowToHigh"
+            checked={sort === "lowToHigh"}
+            onChange={handleSortChange} />
+          <p>Price low to high</p>
+        </label>
       </div>
-      <div>
-        <span className="text-secondary text-[12px]">Brands</span>
-        <div className="bg-white w-[220px] flex flex-col gap-[15px] p-4 text-sm  h-[158px] overflow-y-scroll shadow-xl">
+    </div>
+    <div>
+      <span className="text-secondary text-[12px]">Brands</span>
+      <div className="bg-white w-[220px] flex flex-col gap-[15px] p-4 text-sm  h-[158px] overflow-y-scroll shadow-xl">
+        <div className="flex ">
+          <input type="text" onChange={(e) => brandFilter(e.target.value)} placeholder="Search" className="bg-primary-bg p-2" />
+        </div>
+        {
+          brands.map((item, i) => {
+            return (
+              <div key={i} className="flex gap-2">
+                <input type="checkbox" onChange={() => checkedChange(setBrands, i)} checked={item.checked} />
+                <p>{item.txt}</p>
+              </div>
+            )
+          })
+        }
+      </div>
+    </div>
+    <div>
+      <span className="text-secondary text-[12px]">Model</span>
+        <div ref={autoanimate} className="bg-white w-[220px] flex flex-col gap-[15px] p-4 text-sm">
           <div className="flex ">
-            <input type="text" onChange={(e) => brandFilter(e.target.value)} placeholder="Search" className="bg-primary-bg p-2" />
+            <input onChange={(e) => modelFilter(e.target.value)} type="text" placeholder="Search" className="bg-primary-bg p-2" />
           </div>
-          {
-            brands.map((item, i) => {
-              return (
-                <div key={i} className="flex gap-2">
-                  <input type="checkbox" onChange={() => checkedChange(setBrands, i)} checked={item.checked} />
-                  <p>{item.txt}</p>
-                </div>
-              )
-            })
-          }
-        </div>
-      </div>
-      <div>
-        <span className="text-secondary text-[12px]">Model</span>
-        <div className="bg-white w-[220px] flex flex-col gap-[15px] p-4 text-sm  h-[158px] overflow-y-scroll shadow-xl">
-          {
-            models.length != 0 ?
-              <div className="flex ">
-                <input onChange={(e) => modelFilter(e.target.value)} type="text" placeholder="Search" className="bg-primary-bg p-2" />
-              </div> : null
-          }
-          {
+          {models.length>0?
             models.map((item, i) => {
               return (
                 <div className="flex gap-2">
@@ -158,7 +154,8 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
                   <p>{item.txt}</p>
                 </div>
               )
-            })
+            }):
+            <div className="text-secondary">You haven't selected brands yet!</div>
           }
         </div>
       </div>

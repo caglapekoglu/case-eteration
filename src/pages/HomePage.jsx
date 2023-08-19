@@ -6,8 +6,9 @@ import * as itemActions from "../store/_redux/items/action";
 import * as CardSlice from '../store/_redux/card/slice';
 import { useNavigate } from "react-router-dom";
 import Product from "../components/Product/Product";
-import { baseBrands } from "../data/staticDatas";
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 function HomePage({ value }) {
+  const [animationParent] = useAutoAnimate()
   const dispatch = useDispatch();
   const products = useSelector((state) => state.items.items);
   const cardSlice = CardSlice.Slice;
@@ -26,7 +27,7 @@ function HomePage({ value }) {
     navigate(`/productDetail/${product.id}`, { state: { product: product } });
   };
 
-  const [sort, setSort] = useState("newToOld");
+  const [sort, setSort] = useState("oldToNew");
   const sortedProducts = items
     .filter((obj) => obj.name.toLowerCase().includes(value.toLowerCase()))
     .sort((a, b) => {
@@ -58,14 +59,14 @@ function HomePage({ value }) {
         sort={sort}
         setSort={setSort} />
       <div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div ref={animationParent} className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {sortedProducts
             .filter((obj) =>
               obj.name.toLowerCase().includes(value.toLowerCase())
             )
             .slice(startIndex, endIndex)
             .map((product, i) => (
-              <Product key={i} product={product} addToCard={addToCard} productDetail={productDetail} />
+              <Product key={product.id} product={product} addToCard={addToCard} productDetail={productDetail} />
             ))}
         </div>
         <div className="pagination flex justify-center text-secondary gap-3 mt-4">

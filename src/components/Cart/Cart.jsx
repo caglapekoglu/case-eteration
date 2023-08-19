@@ -1,0 +1,45 @@
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import CartLine from './CartLine';
+import * as CardSlice from '../../store/_redux/card/slice';
+import TotalFrame from './TotalFrame';
+import useTotalPrice from '../../hooks/useTotalPrice';
+const Cart = () => {
+  const [count, setCount] = useState(0);
+  const dispatch = useDispatch();
+  const cardSlice = CardSlice.Slice;
+  const cardItems = useSelector((state) => state.card.cardItems);
+  const total = useTotalPrice();
+  const increment = (product) => {
+    dispatch(cardSlice.actions.increase(product));
+  };
+
+  const decrement = (product) => {
+    dispatch(cardSlice.actions.decrease(product));
+  };
+
+  return (
+    <div className='flex items-center justify-center lg:justify-start flex-col gap-5'>
+      <div>
+        <span className="text-secondary text-[12px]">Cart</span>
+        <div className="bg-white w-[220px] flex flex-col gap-[15px] p-4 text-sm">
+          {
+            cardItems?.map((item, i) => {
+              return (
+                <CartLine
+                  key={i}
+                  item={item}
+                  increment={(e) => increment(e)}
+                  decrement={(e) => decrement(e)} />
+              )
+            })
+          }
+        </div>
+      </div>
+      <TotalFrame total={total} />
+    </div>
+
+  )
+}
+
+export default Cart

@@ -10,6 +10,7 @@ export const getProducts = () => dispatch => {
             .then(response => {
                 if (response.status===200) {
                     const newData = itemListParser(response.data);
+                    debugger
                     dispatch(actions.setItems(newData))
                     return true
                 }

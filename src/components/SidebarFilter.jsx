@@ -89,6 +89,7 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
       <div className="bg-white w-[220px] flex h-[158px] overflow-y-scroll flex-col gap-[15px] p-4 text-sm shadow-xl">
         <label className="flex gap-2">
           <input
+          data-testid="sort-radio"
             type="radio"
             value="oldToNew"
             checked={sort === "oldToNew"}
@@ -97,6 +98,7 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
         </label>
         <label className="flex gap-2">
           <input
+          data-testid="sort-radio"
             type="radio"
             value="newToOld"
             checked={sort === "newToOld"}
@@ -105,6 +107,7 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
         </label>
         <label className="flex gap-2">
           <input
+          data-testid="sort-radio"
             type="radio"
             value="highToLow"
             checked={sort === "highToLow"}
@@ -114,6 +117,7 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
         <label className="flex gap-2">
 
           <input
+          data-testid="sort-radio"
             type="radio"
             value="lowToHigh"
             checked={sort === "lowToHigh"}
@@ -132,7 +136,7 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
           brands.map((item, i) => {
             return (
               <div key={i} className="flex gap-2">
-                <input type="checkbox" onChange={() => checkedChange(setBrands, i)} checked={item.checked} />
+                <input data-testid="brand-checkbox" type="checkbox" onChange={() => checkedChange(setBrands, i)} checked={item.checked} />
                 <p>{item.txt}</p>
               </div>
             )
@@ -144,13 +148,13 @@ const SidebarFilter = ({ sort, setSort, products, items, setItems }) => {
       <span className="text-secondary text-[12px]">Model</span>
         <div ref={autoanimate} className="bg-white w-[220px] flex flex-col gap-[15px] p-4 text-sm">
           <div className="flex ">
-            <input onChange={(e) => modelFilter(e.target.value)} type="text" placeholder="Search" className="bg-primary-bg p-2" />
+            <input data-testid="brand-checkbox" onChange={(e) => modelFilter(e.target.value)} type="text" placeholder="Search" className="bg-primary-bg p-2" />
           </div>
           {models.length>0?
             models.map((item, i) => {
               return (
                 <div className="flex gap-2">
-                  <input checked={item.checked} onChange={(e) => modelSelect(e.target.value, i)} type="checkbox" />
+                  <input data-testid="model-checkbox" checked={item.checked} onChange={(e) => modelSelect(e.target.value, i)} type="checkbox" />
                   <p>{item.txt}</p>
                 </div>
               )

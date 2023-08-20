@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@cypress/react": "^7.0.3",
     "@formkit/auto-animate": "^0.7.0",
     "@manaflair/redux-batch": "^1.0.0",
     "@reduxjs/toolkit": "^1.9.5",

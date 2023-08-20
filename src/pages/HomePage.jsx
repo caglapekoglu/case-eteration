@@ -23,7 +23,6 @@ function HomePage({ value }) {
     setCurrentPage(page);
   };
   const productDetail = (product) => {
-    // /productDetail?id=:id
     navigate(`/productDetail/${product.id}`, { state: { product: product } });
   };
 
@@ -53,13 +52,14 @@ function HomePage({ value }) {
   return (
     <div className=" bg-primary-bg px-8 md:px-32 py-[26px] gap-[35px] min-h-screen lg:flex">
       <SidebarFilter
+      data-testid="sidebar-filter"
         products={products}
         items={items}
         setItems={setItems}
         sort={sort}
         setSort={setSort} />
       <div>
-        <div ref={animationParent} className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div data-testid="product-list" ref={animationParent} className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {sortedProducts
             .filter((obj) =>
               obj.name.toLowerCase().includes(value.toLowerCase())
@@ -71,7 +71,8 @@ function HomePage({ value }) {
         </div>
         <div className="pagination flex justify-center text-secondary gap-3 mt-4">
           {Array.from({ length: totalPages }, (_, index) => (
-            <button
+            <button 
+            data-testid="pagination-button"
               key={index}
               className={`pagination-button  ${currentPage === index + 1
                 ? "active bg-white text-primary px-2 rounded-[6px]"
@@ -84,7 +85,7 @@ function HomePage({ value }) {
           ))}
         </div>
       </div>
-      <Cart />
+      <Cart data-testid="cart" />
     </div>
   );
 }

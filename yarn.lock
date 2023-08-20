@@ -1268,6 +1268,11 @@
   resolved "https://registry.npmjs.org/@csstools/selector-specificity/-/selector-specificity-2.2.0.tgz#2cbcf822bf3764c9658c4d2e568bd0c0cb748016"
   integrity sha512-+OJ9konv95ClSTOJCmMZqpd5+YGsB2S+x6w3E1oaM8UuR5j8nTNHYSz8c9BEPGDOCMQYIEEGlVPj/VY64iTbGw==
 
+"@cypress/react@^7.0.3":
+  version "7.0.3"
+  resolved "https://registry.npmjs.org/@cypress/react/-/react-7.0.3.tgz#e62d67c1344265ee959e99100ce237663f20abb1"
+  integrity sha512-YseqnMugTbdPV9YCYEMXVqIf+P7x+pfjXOdjv4dnDFqNCZeHaZfOZVFZ4XfEHVxMv0aDszxlaLiIp3QDPhr12w==
+
 "@cypress/request@2.88.12":
   version "2.88.12"
   resolved "https://registry.npmjs.org/@cypress/request/-/request-2.88.12.tgz#ba4911431738494a85e93fb04498cb38bc55d590"
